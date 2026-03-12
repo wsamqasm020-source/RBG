@@ -583,8 +583,8 @@
                                   display: flex; align-items: center; justify-content: center;">
         <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
                     padding: 40px; border-radius: 20px; text-align: center; color: white;">
-            <h2> مرحباً بك! </h2>
-            <p>اضغط الزر </p>
+            <h2>🎵 مرحباً بك!</h2>
+            <p>اضغط الزر لتشغيل الموسيقى</p>
             <button onclick="startMusic()" 
                     style="background: white; color: #667eea; border: none; padding: 15px 40px; 
                            border-radius: 30px; font-size: 18px; font-weight: bold; cursor: pointer;">
@@ -673,7 +673,7 @@
                                 <span class="text-primary" id="sizeValue">25%</span>
                             </label>
                             <input type="range" class="range-slider" id="overlaySize" 
-                                   min="20" max="35" value="25" 
+                                   min="20" max="27" value="25" 
                                    oninput="updateSizeLabel(); updateCard();">
                             <div class="size-labels">
                                 <span>صغير</span>
@@ -1399,7 +1399,7 @@ function updateCard() {
 
     <!-- مشغل موسيقى -->
     <audio id="bgMusic" loop style="display: none;">
-        <source src="https://files.catbox.moe/nk7h80.mp3" type="audio/mpeg">
+        <source src="https://files.catbox.moe/wgxu1a.mp4" type="audio/mpeg">
     </audio>
 
     <button id="muteBtn" onclick="toggleMute()" 
