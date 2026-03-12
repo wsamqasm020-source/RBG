@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محرر QR Code - احترافي</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Cairo', sans-serif; }
+        
+        /* ==========================================
+           1. خلفية متحركة gradient
+           ========================================== */
+        body {
+            min-height: 100vh;
+            padding: 30px 0;
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #4facfe, #11998e, #38ef7d);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* ==========================================
+           2. طبقة الجزيئات (Particles)
+           ========================================== */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ==========================================
+           3. الحاوية الرئيسية بتأثير زجاجي
+           ========================================== */
+        .main-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.1);
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* ==========================================
+           4. الهيدر المطور
+           ========================================== */
+        .header {
+            background: linear-gradient(135deg, rgba(102,126,234,0.9) 0%, rgba(118,75,162,0.9) 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: moveGrid 20s linear infinite;
+        }
+
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(20px, 20px); }
+        }
+
+        .header h2 {
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        /* ==========================================
+           5. منطقة الرفع بتأثيرات متقدمة
+           ========================================== */
+        .upload-area {
+            border: 3px dashed rgba(102,126,234,0.3);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(248,249,250,0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-area::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(102,126,234,0.1) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .upload-area:hover::before {
+            width: 300%;
+            height: 300%;
+        }
+
+        .upload-area:hover {
+            border-color: #667eea;
+            background: rgba(240,244,255,0.9);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(102,126,234,0.2);
+        }
+
+        .upload-area.has-file {
+            border-color: #28a745;
+            border-style: solid;
+            background: linear-gradient(135deg, rgba(40,167,69,0.1) 0%, rgba(40,167,69,0.05) 100%);
+            animation: pulseSuccess 2s infinite;
+        }
+
+        @keyframes pulseSuccess {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(40,167,69,0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(40,167,69,0); }
+        }
+
+        /* ==========================================
+           6. صندوق المعاينة بتأثير 3D
+           ========================================== */
+        .preview-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+            position: relative;
+        }
+
+        .preview-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(102,126,234,0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* ==========================================
+           7. الـ Canvas بتأثيرات حركة
+           ========================================== */
+        #qrCanvas {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            animation: float 6s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotateX(5deg) scale(1); }
+            50% { transform: translateY(-15px) rotateX(5deg) scale(1.02); }
+        }
+
+        #qrCanvas:hover {
+            transform: rotateY(10deg) rotateX(10deg) scale(1.05) !important;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            animation: none;
+        }
+
+        /* ==========================================
+           8. أزرار الألوان بتأثيرات فاخرة
+           ========================================== */
+        .color-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            cursor: pointer;
+            margin: 8px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .color-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .color-btn:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .color-btn:hover {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .color-btn.active {
+            border-color: #fff;
+            transform: scale(1.2);
+            box-shadow: 0 0 0 4px rgba(102,126,234,0.3), 0 10px 30px rgba(0,0,0,0.4);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 0 4px rgba(102,126,234,0.3), 0 10px 30px rgba(0,0,0,0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(102,126,234,0.1), 0 15px 40px rgba(0,0,0,0.3); }
+        }
+
+        /* ==========================================
+           9. الأزرار الرئيسية بتأثير نيون
+           ========================================== */
+        .btn-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(102,126,234,0.4);
+            letter-spacing: 1px;
+        }
+
+        .btn-custom::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.6s;
+        }
+
+        .btn-custom:hover::before {
+            left: 100%;
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(102,126,234,0.5);
+            color: white;
+        }
+
+        .btn-custom:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        /* زر التحميل */
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border: none;
+            padding: 18px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(40,167,69,0.4);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(40,167,69,0.5);
+        }
+
+        /* ==========================================
+           10. السلايدر المطور
+           ========================================== */
+        .range-slider {
+            width: 100%;
+            margin: 15px 0;
+            height: 10px;
+            border-radius: 10px;
+            background: linear-gradient(to right, #ddd 0%, #667eea 100%);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.5);
+            transition: all 0.3s;
+            border: 3px solid white;
+        }
+
+        .range-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.3);
+            box-shadow: 0 6px 20px rgba(102,126,234,0.6);
+        }
+
+        .range-slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.5);
+        }
+
+        /* ==========================================
+           11. العداد الزوار
+           ========================================== */
+        .visitor-counter {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            z-index: 1000;
+            animation: slideIn 1s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* ==========================================
+           12. التلميحات والإشعارات
+           ========================================== */
+        .alert-info {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border: none;
+            border-radius: 15px;
+            color: #1565c0;
+            box-shadow: 0 4px 15px rgba(21,101,192,0.1);
+        }
+
+        /* ==========================================
+           13. قسم التحكم بتأثير زجاجي
+           ========================================== */
+        .control-section {
+            background: rgba(248,249,250,0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .control-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+        }
+
+        /* ==========================================
+           14. معاينة الصورة الصغيرة
+           ========================================== */
+        .image-preview-small {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #667eea;
+            box-shadow: 0 8px 25px rgba(102,126,234,0.3);
+            animation: rotateIn 0.6s ease;
+        }
+
+        @keyframes rotateIn {
+            from { transform: rotate(-180deg) scale(0); }
+            to { transform: rotate(0) scale(1); }
+        }
+
+        /* ==========================================
+           15. شريط التحميل المخصص
+           ========================================== */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(5px);
+        }
+
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            position: relative;
+        }
+
+        .loading-spinner::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 4px solid transparent;
+            border-top-color: #764ba2;
+            border-radius: 50%;
+            animation: spin 2s linear infinite reverse;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ==========================================
+           16. تأثيرات النصوص
+           ========================================== */
+        .typing-effect {
+            overflow: hidden;
+            border-right: 3px solid white;
+            white-space: nowrap;
+            animation: typing 3s steps(20) infinite, blink 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            0%, 100% { width: 0; }
+            50% { width: 100%; }
+        }
+
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        /* ==========================================
+           17. تأثير الموجة عند النقر
+           ========================================== */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.6);
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* ==========================================
+           18. شارة جديد
+           ========================================== */
+        .badge-new {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(238,90,36,0.4);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* ==========================================
+           19. تأثير الضوء المتحرك
+           ========================================== */
+        .shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* ==========================================
+           20. استجابة للجوال
+           ========================================== */
+        @media (max-width: 768px) {
+            .main-container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .color-btn {
+                width: 45px;
+                height: 45px;
+                margin: 5px;
+            }
+            
+            .visitor-counter {
+                top: 10px;
+                left: 10px;
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- طبقة الجزيئات -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- عداد الزوار -->
+    <div class="visitor-counter">
+        <i class="fas fa-eye me-2"></i>
+        <span id="visitorCount">1,234</span> زائر
+    </div>
+
+    <!-- شاشة التحميل -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div class="container position-relative" style="z-index: 1;">
+        <div class="main-container">
+            <!-- Header -->
+            <div class="header">
+                <h2 class="mb-2"><i class="fas fa-qrcode me-2"></i>محرر QR Code</h2>
+                <p class="mb-0 opacity-75">صمم QR Code الخاص بك بجودة عالية واحترافية</p>
+            </div>
+            
+            <div class="row g-0">
+                <!-- Preview Side -->
+                <div class="col-lg-5 p-4 border-start position-relative">
+                    <div class="preview-box">
+                        <h5 class="mb-3 text-primary"><i class="fas fa-eye me-2"></i>معاينة النتيجة</h5>
+                        <canvas id="qrCanvas" width="800" height="800" style="max-width: 100%; height: auto;"></canvas>
+                        <div class="mt-4 w-100">
+                            <button class="btn btn-success w-100 shimmer" onclick="downloadHighRes()" id="downloadBtn" disabled>
+                                <i class="fas fa-download me-2"></i>تحميل بدقة عالية (HD)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Controls Side -->
+                <div class="col-lg-7 p-4">
+                    <!-- Step 1: Upload QR -->
+                    <div class="control-section position-relative">
+                        <span class="badge-new">خطوة 1</span>
+                        <h5 class="mb-3"><i class="fas fa-upload me-2 text-primary"></i>ارفع QR Code</h5>
+                        <div class="upload-area" id="qrUploadArea" onclick="document.getElementById('qrInput').click()">
+                            <input type="file" id="qrInput" accept="image/*" class="d-none" onchange="handleQRUpload(this)">
+                            <div id="qrPlaceholder">
+                                <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                                <p class="mb-1 fw-bold">اضغط هنا لرفع صورة QR Code</p>
+                                <small class="text-muted">يدعم JPEG, PNG, GIF</small>
+                            </div>
+                            <div id="qrPreviewContainer" class="d-none">
+                                <img id="qrPreview" style="max-height: 150px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                                <p class="mt-3 mb-0 text-success fw-bold"><i class="fas fa-check-circle me-1"></i> تم الرفع بنجاح</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2: Overlay Image -->
+                    <div class="control-section position-relative">
+                        <span class="badge-new" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">خطوة 2</span>
+                        <h5 class="mb-3"><i class="fas fa-image me-2 text-primary"></i>أضف صورتك (اختياري)</h5>
+                        <div class="upload-area" id="overlayUploadArea" onclick="document.getElementById('overlayInput').click()">
+                            <input type="file" id="overlayInput" accept="image/*" class="d-none" onchange="handleOverlayUpload(this)">
+                            <div id="overlayPlaceholder">
+                                <i class="fas fa-portrait fa-3x text-muted mb-3"></i>
+                                <p class="mb-1 fw-bold">اضغط لإضافة صورتك فوق QR</p>
+                                <small class="text-muted">شعار أو صورة شخصية</small>
+                            </div>
+                            <div id="overlayPreviewContainer" class="d-none">
+                                <img id="overlayPreview" class="image-preview-small">
+                                <p class="mt-3 mb-0 text-success fw-bold"><i class="fas fa-check-circle me-1"></i> تم إضافة الصورة</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Size Control -->
+                        <div class="mt-4" id="sizeControl" style="display: none;">
+                            <label class="fw-bold mb-2 d-flex justify-content-between">
+                                <span>حجم الصورة:</span>
+                                <span class="text-primary" id="sizeValue">25%</span>
+                            </label>
+                            <input type="range" class="range-slider" id="overlaySize" 
+                                   min="20" max="35" value="25" 
+                                   oninput="updateSizeLabel(); updateCard();">
+                            <div class="size-labels">
+                                <span>صغير</span>
+                                <span>مثالي</span>
+                                <span>كبير</span>
+                            </div>
+                            <small class="text-muted mt-2 d-block">
+                                <i class="fas fa-info-circle text-primary"></i>
+                                الحجم المثالي يضمن قراءة QR بشكل صحيح
+                            </small>
+                        </div>
+                        
+                        <div class="alert alert-info mt-3 d-flex align-items-center">
+                            <i class="fas fa-lightbulb fa-lg me-3 text-warning"></i>
+                            <div>
+                                <strong>نصيحة:</strong> الصورة تظهر <strong>فوق</strong> QR Code بالوسط تلقائياً
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3: Card Color -->
+                    <div class="control-section position-relative">
+                        <span class="badge-new" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">خطوة 3</span>
+                        <h5 class="mb-3"><i class="fas fa-palette me-2 text-primary"></i>اختر لون الإطار</h5>
+                        <div class="d-flex flex-wrap justify-content-center">
+                            <div class="color-btn active" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" data-color="purple" onclick="selectColor(this)"></div>
+                            <div class="color-btn" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);" data-color="green" onclick="selectColor(this)"></div>
+                            <div class="color-btn" style="background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);" data-color="red" onclick="selectColor(this)"></div>
+                            <div class="color-btn" style="background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);" data-color="blue" onclick="selectColor(this)"></div>
+                            <div class="color-btn" style="background: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%);" data-color="dark" onclick="selectColor(this)"></div>
+                            <div class="color-btn" style="background: linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%);" data-color="orange" onclick="selectColor(this)"></div>
+                            <div class="color-btn" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);" data-color="pink" onclick="selectColor(this)"></div>
+                            <div class="color-btn" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);" data-color="cyan" onclick="selectColor(this)"></div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-custom w-100" onclick="updateCard()">
+                        <i class="fas fa-sync-alt me-2"></i>تحديث المعاينة
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="text-center mt-4 text-white opacity-75">
+            <small>صمم بـ <i class="fas fa-heart text-danger"></i> بواسطة محرر QR الاحترافي</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        let qrImage = null;
+        let overlayImage = null;
+        let selectedColor = 'purple';
+        
+        const colors = {
+            'purple': ['#667eea', '#764ba2'],
+            'green': ['#11998e', '#38ef7d'],
+            'red': ['#eb3349', '#f45c43'],
+            'blue': ['#00c6ff', '#0072ff'],
+            'dark': ['#2c3e50', '#4ca1af'],
+            'orange': ['#fc4a1a', '#f7b733'],
+            'pink': ['#f093fb', '#f5576c'],
+            'cyan': ['#4facfe', '#00f2fe']
+        };
+
+        // ==========================================
+        // نظام الجزيئات المتحركة
+        // ==========================================
+        const particlesCanvas = document.getElementById('particles-canvas');
+        const pCtx = particlesCanvas.getContext('2d');
+        particlesCanvas.width = window.innerWidth;
+        particlesCanvas.height = window.innerHeight;
+
+        const particles = [];
+        const particleCount = 60;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * particlesCanvas.width;
+                this.y = Math.random() * particlesCanvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > particlesCanvas.width) this.x = 0;
+                if (this.x < 0) this.x = particlesCanvas.width;
+                if (this.y > particlesCanvas.height) this.y = 0;
+                if (this.y < 0) this.y = particlesCanvas.height;
+            }
+
+            draw() {
+                pCtx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                pCtx.beginPath();
+                pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                pCtx.fill();
+            }
+        }
+
+        function initParticles() {
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            pCtx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            // رسم خطوط بين الجزيئات القريبة
+            particles.forEach((a, index) => {
+                particles.slice(index + 1).forEach(b => {
+                    const dx = a.x - b.x;
+                    const dy = a.y - b.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 100) {
+                        pCtx.strokeStyle = `rgba(255, 255, 255, ${0.1 * (1 - distance / 100)})`;
+                        pCtx.lineWidth = 1;
+                        pCtx.beginPath();
+                        pCtx.moveTo(a.x, a.y);
+                        pCtx.lineTo(b.x, b.y);
+                        pCtx.stroke();
+                    }
+                });
+            });
+
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+
+        // تعديل حجم Canvas عند تغيير حجم النافذة
+        window.addEventListener('resize', () => {
+            particlesCanvas.width = window.innerWidth;
+            particlesCanvas.height = window.innerHeight;
+        });
+
+        // ==========================================
+        // تأثير Ripple عند النقر
+        // ==========================================
+        document.addEventListener('click', function(e) {
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple';
+            const size = 20;
+            ripple.style.width = size + 'px';
+            ripple.style.height = size + 'px';
+            ripple.style.left = (e.pageX - size/2) + 'px';
+            ripple.style.top = (e.pageY - size/2) + 'px';
+            document.body.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 600);
+        });
+
+        // ==========================================
+        // عداد الزوار الوهمي (يمكن ربطه بقاعدة بيانات)
+        // ==========================================
+        function updateVisitorCount() {
+            const count = Math.floor(Math.random() * 5000) + 1000;
+            document.getElementById('visitorCount').textContent = count.toLocaleString();
+        }
+        updateVisitorCount();
+
+        // ==========================================
+        // الدوال الأصلية
+        // ==========================================
+        function handleQRUpload(input) {
+            if (input.files && input.files[0]) {
+                showLoading();
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    qrImage = new Image();
+                    qrImage.onload = function() {
+                        document.getElementById('qrPlaceholder').classList.add('d-none');
+                        document.getElementById('qrPreviewContainer').classList.remove('d-none');
+                        document.getElementById('qrPreview').src = e.target.result;
+                        document.getElementById('qrUploadArea').classList.add('has-file');
+                        document.getElementById('downloadBtn').disabled = false;
+                        hideLoading();
+                        updateCard();
+                        
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'تم الرفع!',
+                            text: 'تم تحميل QR Code بنجاح',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            position: 'top-end',
+                            toast: true
+                        });
+                    };
+                    qrImage.src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function handleOverlayUpload(input) {
+            if (input.files && input.files[0]) {
+                showLoading();
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    overlayImage = new Image();
+                    overlayImage.onload = function() {
+                        document.getElementById('overlayPlaceholder').classList.add('d-none');
+                        document.getElementById('overlayPreviewContainer').classList.remove('d-none');
+                        document.getElementById('overlayPreview').src = e.target.result;
+                        document.getElementById('overlayUploadArea').classList.add('has-file');
+                        document.getElementById('sizeControl').style.display = 'block';
+                        hideLoading();
+                        updateCard();
+                        
+                        // تأثير اهتزاز خفيف
+                        document.getElementById('overlayPreviewContainer').animate([
+                            { transform: 'scale(0)' },
+                            { transform: 'scale(1.1)' },
+                            { transform: 'scale(1)' }
+                        ], {
+                            duration: 500,
+                            easing: 'ease-out'
+                        });
+                    };
+                    overlayImage.src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function selectColor(element) {
+            document.querySelectorAll('.color-btn').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+            selectedColor = element.getAttribute('data-color');
+            
+            // تأثير صوتي بصري
+            element.animate([
+                { transform: 'scale(1)' },
+                { transform: 'scale(1.3)' },
+                { transform: 'scale(1.15)' }
+            ], {
+                duration: 300,
+                easing: 'ease-out'
+            });
+            
+            updateCard();
+        }
+
+        function updateSizeLabel() {
+            const size = document.getElementById('overlaySize').value;
+            document.getElementById('sizeValue').textContent = size + '%';
+        }
+
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+
+        function updateCard() {
+            const canvas = document.getElementById('qrCanvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            ctx.clearRect(0, 0, width, height);
+            
+            const [primary, secondary] = colors[selectedColor];
+            
+            // خلفية متدرجة
+            const gradient = ctx.createLinearGradient(0, 0, 0, height);
+            gradient.addColorStop(0, primary);
+            gradient.addColorStop(1, secondary);
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+            
+            // إطار ذهبي
+            ctx.strokeStyle = '#FFD700';
+            ctx.lineWidth = 12;
+            ctx.strokeRect(20, 20, width-40, height-40);
+            
+            ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(40, 40, width-80, height-80);
+            
+            // خلفية بيضاء للـ QR
+            const qrSize = 600;
+            const qrX = (width - qrSize) / 2;
+            const qrY = (height - qrSize) / 2;
+            
+            ctx.fillStyle = 'white';
+            ctx.shadowColor = 'rgba(0,0,0,0.2)';
+            ctx.shadowBlur = 20;
+            ctx.shadowOffsetY = 10;
+            ctx.fillRect(qrX - 20, qrY - 20, qrSize + 40, qrSize + 40);
+            ctx.shadowColor = 'transparent';
+            
+            // رسم QR
+            if (qrImage) {
+                ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize);
+            } else {
+                ctx.fillStyle = '#e0e0e0';
+                ctx.fillRect(qrX, qrY, qrSize, qrSize);
+                ctx.fillStyle = '#999';
+                ctx.textAlign = 'center';
+                ctx.font = 'bold 30px Cairo';
+                ctx.fillText('ارفع QR Code', width/2, height/2);
+                ctx.font = '20px Cairo';
+                ctx.fillText('لبدء التصميم', width/2, height/2 + 40);
+            }
+            
+            // رسم الصورة فوق QR
+            if (overlayImage && qrImage) {
+                const sizePercent = parseInt(document.getElementById('overlaySize').value);
+                const overlaySize = (qrSize * sizePercent) / 100;
+                const centerX = width / 2;
+                const centerY = height / 2;
+                
+                ctx.save();
+                
+                // دائرة مقصوصة
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, overlaySize/2, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.clip();
+                
+                ctx.drawImage(overlayImage, centerX - overlaySize/2, centerY - overlaySize/2, overlaySize, overlaySize);
+                ctx.restore();
+                
+                // إطار أبيض
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, overlaySize/2, 0, Math.PI * 2);
+                ctx.strokeStyle = 'white';
+                ctx.lineWidth = 8;
+                ctx.stroke();
+                
+                // ظل
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, overlaySize/2 + 4, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+                ctx.lineWidth = 4;
+                ctx.stroke();
+            }
+        }
+
+        function downloadHighRes() {
+            showLoading();
+            
+            setTimeout(() => {
+                const canvas = document.getElementById('qrCanvas');
+                const exportCanvas = document.createElement('canvas');
+                const exportCtx = exportCanvas.getContext('2d');
+                exportCanvas.width = 1600;
+                exportCanvas.height = 1600;
+                
+                exportCtx.drawImage(canvas, 0, 0, 1600, 1600);
+                
+                const link = document.createElement('a');
+                link.download = `QR-Code-HD-${Date.now()}.png`;
+                link.href = exportCanvas.toDataURL('image/png', 1.0);
+                link.click();
+                
+                hideLoading();
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: '🎉 تم التحميل بنجاح!',
+                    text: 'الصورة بدقة عالية (1600x1600) جاهزة للاستخدام',
+                    confirmButtonColor: '#667eea',
+                    confirmButtonText: 'رائع!',
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+            }, 500);
+        }
+        
+        // تهيئة أولية
+        window.onload = function() {
+            const canvas = document.getElementById('qrCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // خلفية متحركة أولية
+            let hue = 0;
+            function animateIntro() {
+                hue = (hue + 1) % 360;
+                ctx.fillStyle = `hsl(${hue}, 70%, 95%)`;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#667eea';
+                ctx.textAlign = 'center';
+                ctx.font = 'bold 35px Cairo';
+                ctx.fillText('✨ جاهز للتصميم ✨', canvas.width/2, canvas.height/2);
+            }
+            
+            // تشغيل مرة واحدة فقط
+            animateIntro();
+            
+            // ثم الرسم الثابت
+            setTimeout(() => {
+                updateCard();
+            }, 100);
+        };
+
+        // اختصارات لوحة المفاتيح
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                if (!document.getElementById('downloadBtn').disabled) {
+                    downloadHighRes();
+                }
+            }
+        });
+
+        
+        
+// ==========================================
+// الدالة السحرية - تحويل أي صورة لمربع 1:1
+// ==========================================
+function makeSquare(img, callback) {
+    const canvas = document.createElement('canvas');
+    const size = Math.min(img.width, img.height);
+    canvas.width = 800;  // حجم ثابت عالي
+    canvas.height = 800;
+    const ctx = canvas.getContext('2d');
+    
+    // قص من الوسط
+    const sx = (img.width - size) / 2;
+    const sy = (img.height - size) / 2;
+    
+    ctx.drawImage(img, sx, sy, size, size, 0, 0, 800, 800);
+    
+    const result = new Image();
+    result.onload = function() {
+        if (callback) callback(result);
+    };
+    result.src = canvas.toDataURL('image/png');
+    result.width = 800;
+    result.height = 800;
+    return result;
+}
+
+function handleQRUpload(input) {
+    if (!input.files || !input.files[0]) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+            // تحويل تلقائي لـ 1:1 مع callback
+            makeSquare(img, function(squaredImg) {
+                qrImage = squaredImg;
+                
+                const placeholder = document.getElementById('qrPlaceholder');
+                const previewContainer = document.getElementById('qrPreviewContainer');
+                const preview = document.getElementById('qrPreview');
+                const uploadArea = document.getElementById('qrUploadArea');
+                const downloadBtn = document.getElementById('downloadBtn');
+                
+                if (placeholder) placeholder.classList.add('d-none');
+                if (previewContainer) previewContainer.classList.remove('d-none');
+                if (preview) preview.src = qrImage.src;
+                if (uploadArea) uploadArea.classList.add('has-file');
+                if (downloadBtn) downloadBtn.disabled = false;
+                
+                updateCard();
+                
+                // التحقق من وجود Swal قبل الاستخدام
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'تم التحويل!',
+                        text: 'الصورة أصبحت مربعة 1:1',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                }
+            });
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(input.files[0]);
+}
+
+function handleOverlayUpload(input) {
+    if (!input.files || !input.files[0]) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+            // تحويل تلقائي لـ 1:1 مع callback
+            makeSquare(img, function(squaredImg) {
+                overlayImage = squaredImg;
+                
+                const placeholder = document.getElementById('overlayPlaceholder');
+                const previewContainer = document.getElementById('overlayPreviewContainer');
+                const preview = document.getElementById('overlayPreview');
+                const uploadArea = document.getElementById('overlayUploadArea');
+                const sizeControl = document.getElementById('sizeControl');
+                
+                if (placeholder) placeholder.classList.add('d-none');
+                if (previewContainer) previewContainer.classList.remove('d-none');
+                if (preview) preview.src = overlayImage.src;
+                if (uploadArea) uploadArea.classList.add('has-file');
+                if (sizeControl) sizeControl.style.display = 'block';
+                
+                updateCard();
+            });
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(input.files[0]);
+}
+
+function selectColor(element) {
+    document.querySelectorAll('.color-btn').forEach(el => el.classList.remove('active'));
+    element.classList.add('active');
+    selectedColor = element.getAttribute('data-color');
+    updateCard();
+}
+
+function updateSizeLabel() {
+    const sizeValue = document.getElementById('sizeValue');
+    const overlaySize = document.getElementById('overlaySize');
+    if (sizeValue && overlaySize) {
+        sizeValue.textContent = overlaySize.value + '%';
+    }
+}
+
+function updateCard() {
+    const canvas = document.getElementById('qrCanvas');
+    if (!canvas) {
+        console.error('Canvas not found: qrCanvas');
+        return;
+    }
+    
+    const ctx = canvas.getContext('2d');
+    const w = 800, h = 800;
+    
+    // ضبط أبعاد الكانفاس
+    canvas.width = w;
+    canvas.height = h;
+    
+    ctx.clearRect(0, 0, w, h);
+    
+    // خلفية متدرجة
+    const colorKey = selectedColor || 'blue';
+    const [c1, c2] = colors[colorKey] || colors['blue'];
+    const grad = ctx.createLinearGradient(0, 0, 0, h);
+    grad.addColorStop(0, c1);
+    grad.addColorStop(1, c2);
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
+    
+    // إطار ذهبي
+    ctx.strokeStyle = '#FFD700';
+    ctx.lineWidth = 12;
+    ctx.strokeRect(20, 20, w-40, h-40);
+    
+    // خلفية بيضاء للـ QR
+    const qrSize = 600;
+    const qrX = (w - qrSize) / 2;
+    const qrY = (h - qrSize) / 2;
+    ctx.fillStyle = 'white';
+    ctx.fillRect(qrX-20, qrY-20, qrSize+40, qrSize+40);
+    
+    // رسم QR
+    if (qrImage && qrImage.complete) {
+        ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize);
+    } else {
+        ctx.fillStyle = '#ddd';
+        ctx.fillRect(qrX, qrY, qrSize, qrSize);
+        ctx.fillStyle = '#999';
+        ctx.textAlign = 'center';
+        ctx.font = '30px Cairo, Arial, sans-serif';
+        ctx.fillText('ارفع QR Code', w/2, h/2);
+    }
+    
+    // رسم الصورة فوق
+    if (overlayImage && overlayImage.complete && qrImage) {
+        const overlaySizeInput = document.getElementById('overlaySize');
+        const pct = overlaySizeInput ? parseInt(overlaySizeInput.value) || 30 : 30;
+        const sz = (qrSize * pct) / 100;
+        const cx = w / 2, cy = h / 2;
+        
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(cx, cy, sz/2, 0, Math.PI*2);
+        ctx.clip();
+        ctx.drawImage(overlayImage, cx-sz/2, cy-sz/2, sz, sz);
+        ctx.restore();
+        
+        ctx.beginPath();
+        ctx.arc(cx, cy, sz/2, 0, Math.PI*2);
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 6;
+        ctx.stroke();
+    }
+}
+
+function downloadImage() {
+    const canvas = document.getElementById('qrCanvas');
+    if (!canvas) {
+        console.error('Canvas not found');
+        return;
+    }
+    
+    // التأكد من أن الكانفاس محدث
+    updateCard();
+    
+    const link = document.createElement('a');
+    link.download = 'QR-Code-' + Date.now() + '.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+}
+
+// تهيئة
+window.onload = function() {
+    updateCard();
+};
+    </script>
+</body>
+</html>
