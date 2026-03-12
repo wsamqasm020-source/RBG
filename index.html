@@ -574,8 +574,25 @@
             }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
+    <!-- نافذة الترحيب -->
+    <div id="welcomeModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                                  background: rgba(0,0,0,0.9); z-index: 10000; 
+                                  display: flex; align-items: center; justify-content: center;">
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                    padding: 40px; border-radius: 20px; text-align: center; color: white;">
+            <h2> مرحباً بك! </h2>
+            <p>اضغط الزر </p>
+            <button onclick="startMusic()" 
+                    style="background: white; color: #667eea; border: none; padding: 15px 40px; 
+                           border-radius: 30px; font-size: 18px; font-weight: bold; cursor: pointer;">
+                دخول 🚀
+            </button>
+        </div>
+    </div>
+
     <!-- طبقة الجزيئات -->
     <canvas id="particles-canvas"></canvas>
 
@@ -1379,5 +1396,41 @@ function updateCard() {
     }
 }
     </script>
+
+    <!-- مشغل موسيقى -->
+    <audio id="bgMusic" loop style="display: none;">
+        <source src="https://files.catbox.moe/nk7h80.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="muteBtn" onclick="toggleMute()" 
+            style="position: fixed; bottom: 20px; left: 20px; z-index: 9999; 
+                   width: 50px; height: 50px; border-radius: 50%; border: none;
+                   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                   color: white; font-size: 20px; cursor: pointer;">🔊</button>
+
+<script>
+    var bgMusic = document.getElementById('bgMusic');
+    var isMuted = false;
+
+    function startMusic() {
+        document.getElementById('welcomeModal').style.display = 'none';
+        if (bgMusic) {
+            bgMusic.volume = 0.5;
+            bgMusic.play().then(function() {
+                console.log('Music started!');
+            }).catch(function(err) {
+                console.log('Error:', err);
+            });
+        }
+    }
+
+    function toggleMute() {
+        if (!bgMusic) return;
+        isMuted = !isMuted;
+        bgMusic.muted = isMuted;
+        document.getElementById('muteBtn').innerHTML = isMuted ? '🔇' : '🔊';
+    }
+</script>
+
 </body>
 </html>
