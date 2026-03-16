@@ -470,18 +470,25 @@
 <base target="_blank">
 </head>
 <body>
-    <!-- نافذة الترحيب -->
+    <!-- ✅ نافذة الترحيب -->
     <div id="welcomeModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
                                   background: rgba(0,0,0,0.9); z-index: 10000; 
                                   display: flex; align-items: center; justify-content: center;">
         <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                    padding: 40px; border-radius: 20px; text-align: center; color: white;">
+                    padding: 40px; border-radius: 20px; text-align: center; color: white; max-width: 90%;">
             <h2>🎵 مرحباً بك!</h2>
-            <p>اضغط الزر لتشغيل الموسيقى</p>
-            <button onclick="startMusic()" 
+            <p class="mb-3">اضغط الزر لتشغيل الموسيقى والدخول</p>
+            <button id="enterBtn" onclick="enterSite()" 
                     style="background: white; color: #667eea; border: none; padding: 15px 40px; 
-                           border-radius: 30px; font-size: 18px; font-weight: bold; cursor: pointer;">
-                دخول 🚀
+                           border-radius: 30px; font-size: 18px; font-weight: bold; cursor: pointer;
+                           box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: all 0.3s;">
+                دخول مع الموسيقى 🚀
+            </button>
+            <br><br>
+            <button onclick="enterSiteNoMusic()" 
+                    style="background: transparent; color: white; border: 2px solid white; 
+                           padding: 10px 30px; border-radius: 20px; font-size: 14px; cursor: pointer;">
+                دخول بدون موسيقى 🔇
             </button>
         </div>
     </div>
@@ -559,13 +566,12 @@
                             </div>
                         </div>
                         
-                        <!-- Size Control - ✅ الحد الأقصى 27% -->
+                        <!-- Size Control -->
                         <div class="mt-4" id="sizeControl" style="display: none;">
                             <label class="fw-bold mb-2 d-flex justify-content-between">
                                 <span>حجم الصورة:</span>
                                 <span class="text-primary" id="sizeValue">20%</span>
                             </label>
-                            <!-- ✅ max="27" - الحد الأقصى 27% -->
                             <input type="range" class="range-slider" id="overlaySize" 
                                    min="15" max="27" value="20" 
                                    oninput="updateSizeLabel(); updateCard();">
@@ -724,6 +730,74 @@
         });
 
         // ==========================================
+        // ✅ الموسيقى - رابط موثوق من Pixabay (CDN)
+        // ==========================================
+        var bgMusic = new Audio();
+        bgMusic.loop = true;
+        bgMusic.preload = 'auto';
+        // ✅ رابط موسيقى هادئة من Pixabay CDN
+        bgMusic.src = 'https://files.catbox.moe/wa4fzv.m4a';
+        
+        var isMuted = false;
+        var musicStarted = false;
+
+        // ✅ دخول مع الموسيقى
+        function enterSite() {
+            document.getElementById('welcomeModal').style.display = 'none';
+            
+            bgMusic.volume = 0.4;
+            
+            // ✅ تشغيل مع معالجة الأخطاء
+            var playPromise = bgMusic.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(function() {
+                    console.log('✅ Music playing!');
+                    musicStarted = true;
+                    isMuted = false;
+                    updateMuteButton();
+                }).catch(function(error) {
+                    console.log('❌ Play failed:', error);
+                    alert('تعذر تشغيل الموسيقى. جرب الضغط على زر 🔊 في الأسفل.');
+                });
+            }
+        }
+
+        // ✅ دخول بدون موسيقى
+        function enterSiteNoMusic() {
+            document.getElementById('welcomeModal').style.display = 'none';
+            musicStarted = false;
+            isMuted = true;
+            bgMusic.pause();
+            updateMuteButton();
+        }
+
+        // ✅ تبديل الميوت
+        function toggleMute() {
+            isMuted = !isMuted;
+            bgMusic.muted = isMuted;
+            
+            if (!isMuted && bgMusic.paused) {
+                bgMusic.play().then(function() {
+                    musicStarted = true;
+                    console.log('✅ Started via toggle');
+                }).catch(function(e) {
+                    console.log('❌ Toggle failed:', e);
+                });
+            }
+            
+            updateMuteButton();
+        }
+
+        // ✅ تحديث زر الميوت
+        function updateMuteButton() {
+            var btn = document.getElementById('muteBtn');
+            if (btn) {
+                btn.innerHTML = isMuted ? '🔇' : '🔊';
+            }
+        }
+
+        // ==========================================
         // عداد الزوار
         // ==========================================
         function updateVisitorCount() {
@@ -795,13 +869,12 @@
             ctx.lineWidth = 3;
             ctx.strokeRect(innerPadding, innerPadding, width - innerPadding*2, height - innerPadding*2);
             
-            
             // ==========================================
             // منطقة QR الكبيرة (750px)
             // ==========================================
             const qrSize = 750;
             const qrX = (width - qrSize) / 2;
-            const qrY = (height - qrSize) / 2 ;
+            const qrY = (height - qrSize) / 2;
             
             // خلفية بيضاء
             ctx.shadowColor = 'rgba(0,0,0,0.2)';
@@ -846,16 +919,15 @@
             }
             
             // ==========================================
-            // ✅ الصورة الشخصية - الحد الأقصى 27%
+            // الصورة الشخصية - الحد الأقصى 27%
             // ==========================================
             if (overlayImage && overlayImage.complete && qrImage) {
-                // ✅ قراءة القيمة مع التأكد من عدم تجاوز 27%
                 let sizePercent = parseInt(document.getElementById('overlaySize').value) || 20;
-                sizePercent = Math.min(sizePercent, 27); // ✅ الحد الأقصى 27%
+                sizePercent = Math.min(sizePercent, 27);
                 
                 const overlaySize = (qrSize * sizePercent) / 100;
                 const centerX = width / 2;
-                const centerY = height / 2 - 20;
+                const centerY = height / 2;
                 
                 ctx.save();
                 ctx.beginPath();
@@ -904,10 +976,7 @@
                 ctx.lineWidth = 1;
                 ctx.stroke();
             }
-            
-           
         }
-
 
         // ==========================================
         // دوال المعالجة
@@ -1035,7 +1104,6 @@
             const sizeValue = document.getElementById('sizeValue');
             const overlaySize = document.getElementById('overlaySize');
             if (sizeValue && overlaySize) {
-                // ✅ التأكد من عدم تجاوز 27% في العرض أيضاً
                 let val = parseInt(overlaySize.value);
                 val = Math.min(val, 27);
                 sizeValue.textContent = val + '%';
@@ -1108,47 +1176,18 @@
             }
         });
 
-        // ==========================================
-        // الموسيقى
-        // ==========================================
-        var bgMusic = document.getElementById('bgMusic');
-        var isMuted = false;
-
-        function startMusic() {
-            document.getElementById('welcomeModal').style.display = 'none';
-            if (bgMusic) {
-                bgMusic.volume = 0.5;
-                bgMusic.play().then(function() {
-                    console.log('Music started!');
-                }).catch(function(err) {
-                    console.log('Error:', err);
-                });
-            }
-        }
-
-        function toggleMute() {
-            if (!bgMusic) return;
-            isMuted = !isMuted;
-            bgMusic.muted = isMuted;
-            document.getElementById('muteBtn').innerHTML = isMuted ? '🔇' : '🔊';
-        }
-
         // تهيئة أولية
         window.addEventListener('load', function() {
             updateCard();
         });
     </script>
 
-    <!-- مشغل موسيقى -->
-    <audio id="bgMusic" loop style="display: none;">
-        <source src="https://files.catbox.moe/wa4fzv.m4a" type="audio/mpeg">
-    </audio>
-
+    <!-- ✅ زر الميوت -->
     <button id="muteBtn" onclick="toggleMute()" 
             style="position: fixed; bottom: 20px; left: 20px; z-index: 9999; 
                    width: 50px; height: 50px; border-radius: 50%; border: none;
                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                   color: white; font-size: 20px; cursor: pointer;">🔊</button>
+                   color: white; font-size: 20px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">🔊</button>
 
 </body>
 </html>
