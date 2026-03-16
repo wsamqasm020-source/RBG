@@ -3,20 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محرر QR Code - احترافي</title>
+    <title>محرر QR Code - احترافي فاخر</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * { font-family: 'Cairo', sans-serif; }
         
-        /* ==========================================
-           1. خلفية متحركة gradient
-           ========================================== */
         body {
             min-height: 100vh;
             padding: 30px 0;
-            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #4facfe, #11998e, #38ef7d);
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #4facfe, #11998e, #38ef7d, #FFD700, #B8860B);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
             position: relative;
@@ -29,9 +26,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* ==========================================
-           2. طبقة الجزيئات (Particles)
-           ========================================== */
         #particles-canvas {
             position: fixed;
             top: 0;
@@ -42,9 +36,6 @@
             z-index: 0;
         }
 
-        /* ==========================================
-           3. الحاوية الرئيسية بتأثير زجاجي
-           ========================================== */
         .main-container {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
@@ -56,9 +47,6 @@
             border: 1px solid rgba(255,255,255,0.3);
         }
 
-        /* ==========================================
-           4. الهيدر المطور
-           ========================================== */
         .header {
             background: linear-gradient(135deg, rgba(102,126,234,0.9) 0%, rgba(118,75,162,0.9) 100%);
             color: white;
@@ -91,9 +79,6 @@
             text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
-        /* ==========================================
-           5. منطقة الرفع بتأثيرات متقدمة
-           ========================================== */
         .upload-area {
             border: 3px dashed rgba(102,126,234,0.3);
             border-radius: 20px;
@@ -142,15 +127,12 @@
             50% { box-shadow: 0 0 0 10px rgba(40,167,69,0); }
         }
 
-        /* ==========================================
-           6. صندوق المعاينة بتأثير 3D
-           ========================================== */
         .preview-box {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             border-radius: 20px;
             padding: 30px;
             text-align: center;
-            min-height: 400px;
+            min-height: 500px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -170,9 +152,6 @@
             pointer-events: none;
         }
 
-        /* ==========================================
-           7. الـ Canvas بتأثيرات حركة
-           ========================================== */
         #qrCanvas {
             max-width: 100%;
             border-radius: 15px;
@@ -195,9 +174,6 @@
             animation: none;
         }
 
-        /* ==========================================
-           8. أزرار الألوان بتأثيرات فاخرة
-           ========================================== */
         .color-btn {
             width: 60px;
             height: 60px;
@@ -246,9 +222,6 @@
             50% { box-shadow: 0 0 0 8px rgba(102,126,234,0.1), 0 15px 40px rgba(0,0,0,0.3); }
         }
 
-        /* ==========================================
-           9. الأزرار الرئيسية بتأثير نيون
-           ========================================== */
         .btn-custom {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -285,11 +258,6 @@
             color: white;
         }
 
-        .btn-custom:active {
-            transform: translateY(-1px) scale(0.98);
-        }
-
-        /* زر التحميل */
         .btn-success {
             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             border: none;
@@ -308,9 +276,6 @@
             box-shadow: 0 15px 40px rgba(40,167,69,0.5);
         }
 
-        /* ==========================================
-           10. السلايدر المطور
-           ========================================== */
         .range-slider {
             width: 100%;
             margin: 15px 0;
@@ -341,19 +306,6 @@
             box-shadow: 0 6px 20px rgba(102,126,234,0.6);
         }
 
-        .range-slider::-moz-range-thumb {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            cursor: pointer;
-            border: 3px solid white;
-            box-shadow: 0 4px 15px rgba(102,126,234,0.5);
-        }
-
-        /* ==========================================
-           11. العداد الزوار
-           ========================================== */
         .visitor-counter {
             position: fixed;
             top: 20px;
@@ -375,9 +327,6 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
-        /* ==========================================
-           12. التلميحات والإشعارات
-           ========================================== */
         .alert-info {
             background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
             border: none;
@@ -386,9 +335,6 @@
             box-shadow: 0 4px 15px rgba(21,101,192,0.1);
         }
 
-        /* ==========================================
-           13. قسم التحكم بتأثير زجاجي
-           ========================================== */
         .control-section {
             background: rgba(248,249,250,0.8);
             backdrop-filter: blur(10px);
@@ -405,9 +351,6 @@
             box-shadow: 0 12px 40px rgba(0,0,0,0.1);
         }
 
-        /* ==========================================
-           14. معاينة الصورة الصغيرة
-           ========================================== */
         .image-preview-small {
             width: 90px;
             height: 90px;
@@ -423,9 +366,6 @@
             to { transform: rotate(0) scale(1); }
         }
 
-        /* ==========================================
-           15. شريط التحميل المخصص
-           ========================================== */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -444,7 +384,7 @@
             width: 80px;
             height: 80px;
             border: 4px solid rgba(255,255,255,0.1);
-            border-top-color: #667eea;
+            border-top-color: #FFD700;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             position: relative;
@@ -458,7 +398,7 @@
             right: -10px;
             bottom: -10px;
             border: 4px solid transparent;
-            border-top-color: #764ba2;
+            border-top-color: #667eea;
             border-radius: 50%;
             animation: spin 2s linear infinite reverse;
         }
@@ -467,47 +407,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* ==========================================
-           16. تأثيرات النصوص
-           ========================================== */
-        .typing-effect {
-            overflow: hidden;
-            border-right: 3px solid white;
-            white-space: nowrap;
-            animation: typing 3s steps(20) infinite, blink 0.75s step-end infinite;
-        }
-
-        @keyframes typing {
-            0%, 100% { width: 0; }
-            50% { width: 100%; }
-        }
-
-        @keyframes blink {
-            50% { border-color: transparent; }
-        }
-
-        /* ==========================================
-           17. تأثير الموجة عند النقر
-           ========================================== */
-        .ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.6);
-            transform: scale(0);
-            animation: ripple-animation 0.6s linear;
-            pointer-events: none;
-        }
-
-        @keyframes ripple-animation {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
-
-        /* ==========================================
-           18. شارة جديد
-           ========================================== */
         .badge-new {
             position: absolute;
             top: -10px;
@@ -527,9 +426,6 @@
             50% { transform: translateY(-5px); }
         }
 
-        /* ==========================================
-           19. تأثير الضوء المتحرك
-           ========================================== */
         .shimmer {
             position: relative;
             overflow: hidden;
@@ -551,9 +447,6 @@
             100% { left: 100%; }
         }
 
-        /* ==========================================
-           20. استجابة للجوال
-           ========================================== */
         @media (max-width: 768px) {
             .main-container {
                 margin: 10px;
@@ -611,8 +504,8 @@
         <div class="main-container">
             <!-- Header -->
             <div class="header">
-                <h2 class="mb-2"><i class="fas fa-qrcode me-2"></i>محرر QR Code</h2>
-                <p class="mb-0 opacity-75">صمم QR Code الخاص بك بجودة عالية واحترافية</p>
+                <h2 class="mb-2"><i class="fas fa-qrcode me-2"></i>محرر QR Code الفاخر</h2>
+                <p class="mb-0 opacity-75">صمم بطاقة حضور احترافية بجودة عالية</p>
             </div>
             
             <div class="row g-0">
@@ -620,7 +513,7 @@
                 <div class="col-lg-5 p-4 border-start position-relative">
                     <div class="preview-box">
                         <h5 class="mb-3 text-primary"><i class="fas fa-eye me-2"></i>معاينة النتيجة</h5>
-                        <canvas id="qrCanvas" width="800" height="800" style="max-width: 100%; height: auto;"></canvas>
+                        <canvas id="qrCanvas" width="1000" height="1000" style="max-width: 100%; height: auto;"></canvas>
                         <div class="mt-4 w-100">
                             <button class="btn btn-success w-100 shimmer" onclick="downloadHighRes()" id="downloadBtn" disabled>
                                 <i class="fas fa-download me-2"></i>تحميل بدقة عالية (HD)
@@ -666,23 +559,24 @@
                             </div>
                         </div>
                         
-                        <!-- Size Control -->
+                        <!-- Size Control - ✅ الحد الأقصى 27% -->
                         <div class="mt-4" id="sizeControl" style="display: none;">
                             <label class="fw-bold mb-2 d-flex justify-content-between">
                                 <span>حجم الصورة:</span>
-                                <span class="text-primary" id="sizeValue">25%</span>
+                                <span class="text-primary" id="sizeValue">20%</span>
                             </label>
+                            <!-- ✅ max="27" - الحد الأقصى 27% -->
                             <input type="range" class="range-slider" id="overlaySize" 
-                                   min="20" max="27" value="25" 
+                                   min="15" max="27" value="20" 
                                    oninput="updateSizeLabel(); updateCard();">
-                            <div class="size-labels">
-                                <span>صغير</span>
+                            <div class="d-flex justify-content-between text-muted small">
+                                <span>صغير (15%)</span>
                                 <span>مثالي</span>
-                                <span>كبير</span>
+                                <span class="text-danger fw-bold">الحد الأقصى (27%)</span>
                             </div>
                             <small class="text-muted mt-2 d-block">
                                 <i class="fas fa-info-circle text-primary"></i>
-                                الحجم المثالي يضمن قراءة QR بشكل صحيح
+                                الحجم الأقصى 27% لضمان قراءة QR بشكل صحيح
                             </small>
                         </div>
                         
@@ -707,6 +601,8 @@
                             <div class="color-btn" style="background: linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%);" data-color="orange" onclick="selectColor(this)"></div>
                             <div class="color-btn" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);" data-color="pink" onclick="selectColor(this)"></div>
                             <div class="color-btn" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);" data-color="cyan" onclick="selectColor(this)"></div>
+                            <div class="color-btn" style="background: linear-gradient(135deg, #FFD700 0%, #B8860B 100%);" data-color="gold" onclick="selectColor(this)" title="ذهبي فاخر"></div>
+                            <div class="color-btn" style="background: linear-gradient(135deg, #141E30 0%, #243B55 100%);" data-color="royal" onclick="selectColor(this)" title="ملكي"></div>
                         </div>
                     </div>
                     
@@ -724,7 +620,11 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <script>
+        // ==========================================
+        // المتغيرات العامة
+        // ==========================================
         let qrImage = null;
         let overlayImage = null;
         let selectedColor = 'purple';
@@ -737,7 +637,9 @@
             'dark': ['#2c3e50', '#4ca1af'],
             'orange': ['#fc4a1a', '#f7b733'],
             'pink': ['#f093fb', '#f5576c'],
-            'cyan': ['#4facfe', '#00f2fe']
+            'cyan': ['#4facfe', '#00f2fe'],
+            'gold': ['#FFD700', '#B8860B'],
+            'royal': ['#141E30', '#243B55']
         };
 
         // ==========================================
@@ -793,7 +695,6 @@
                 particle.draw();
             });
 
-            // رسم خطوط بين الجزيئات القريبة
             particles.forEach((a, index) => {
                 particles.slice(index + 1).forEach(b => {
                     const dx = a.x - b.x;
@@ -817,30 +718,13 @@
         initParticles();
         animateParticles();
 
-        // تعديل حجم Canvas عند تغيير حجم النافذة
         window.addEventListener('resize', () => {
             particlesCanvas.width = window.innerWidth;
             particlesCanvas.height = window.innerHeight;
         });
 
         // ==========================================
-        // تأثير Ripple عند النقر
-        // ==========================================
-        document.addEventListener('click', function(e) {
-            const ripple = document.createElement('div');
-            ripple.className = 'ripple';
-            const size = 20;
-            ripple.style.width = size + 'px';
-            ripple.style.height = size + 'px';
-            ripple.style.left = (e.pageX - size/2) + 'px';
-            ripple.style.top = (e.pageY - size/2) + 'px';
-            document.body.appendChild(ripple);
-            
-            setTimeout(() => ripple.remove(), 600);
-        });
-
-        // ==========================================
-        // عداد الزوار الوهمي (يمكن ربطه بقاعدة بيانات)
+        // عداد الزوار
         // ==========================================
         function updateVisitorCount() {
             const count = Math.floor(Math.random() * 5000) + 1000;
@@ -849,68 +733,288 @@
         updateVisitorCount();
 
         // ==========================================
-        // الدوال الأصلية
+        // الدالة الرئيسية
         // ==========================================
+        function updateCard() {
+            const canvas = document.getElementById('qrCanvas');
+            if (!canvas) {
+                console.error('Canvas not found!');
+                return;
+            }
+            
+            const ctx = canvas.getContext('2d');
+            const width = 1000;
+            const height = 1000;
+            
+            canvas.width = width;
+            canvas.height = height;
+            
+            ctx.clearRect(0, 0, width, height);
+            
+            const [primary, secondary] = colors[selectedColor] || colors['purple'];
+            
+            // خلفية متدرجة
+            const gradient = ctx.createLinearGradient(0, 0, width, height);
+            gradient.addColorStop(0, primary);
+            gradient.addColorStop(0.5, secondary);
+            gradient.addColorStop(1, primary);
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+            
+            // ==========================================
+            // الإطار الخارجي الفاخر
+            // ==========================================
+            const outerPadding = 30;
+            const innerPadding = 60;
+            
+            // ظل خارجي
+            ctx.shadowColor = 'rgba(0,0,0,0.5)';
+            ctx.shadowBlur = 40;
+            ctx.shadowOffsetY = 20;
+            ctx.fillStyle = 'rgba(0,0,0,0.1)';
+            ctx.fillRect(outerPadding + 10, outerPadding + 10, width - outerPadding*2, height - outerPadding*2);
+            ctx.shadowColor = 'transparent';
+            
+            // إطار خارجي
+            ctx.strokeStyle = primary;
+            ctx.lineWidth = 25;
+            ctx.strokeRect(outerPadding, outerPadding, width - outerPadding*2, height - outerPadding*2);
+            
+            // إطار لامع
+            const frameGradient = ctx.createLinearGradient(0, 0, width, height);
+            frameGradient.addColorStop(0, primary);
+            frameGradient.addColorStop(0.5, '#ffffff');
+            frameGradient.addColorStop(1, secondary);
+            
+            ctx.strokeStyle = frameGradient;
+            ctx.lineWidth = 15;
+            ctx.strokeRect(outerPadding + 5, outerPadding + 5, width - outerPadding*2 - 10, height - outerPadding*2 - 10);
+            
+            // إطار داخلي
+            ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(innerPadding, innerPadding, width - innerPadding*2, height - innerPadding*2);
+            
+            
+            // ==========================================
+            // منطقة QR الكبيرة (750px)
+            // ==========================================
+            const qrSize = 750;
+            const qrX = (width - qrSize) / 2;
+            const qrY = (height - qrSize) / 2 ;
+            
+            // خلفية بيضاء
+            ctx.shadowColor = 'rgba(0,0,0,0.2)';
+            ctx.shadowBlur = 30;
+            ctx.shadowOffsetY = 10;
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(qrX - 20, qrY - 20, qrSize + 40, qrSize + 40);
+            ctx.shadowColor = 'transparent';
+            
+            // إطار QR
+            ctx.strokeStyle = primary;
+            ctx.lineWidth = 4;
+            ctx.strokeRect(qrX - 10, qrY - 10, qrSize + 20, qrSize + 20);
+            
+            // خط زخرفي
+            ctx.strokeStyle = secondary;
+            ctx.lineWidth = 1;
+            ctx.strokeRect(qrX - 5, qrY - 5, qrSize + 10, qrSize + 10);
+            
+            // ==========================================
+            // رسم QR Code
+            // ==========================================
+            if (qrImage && qrImage.complete) {
+                ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize);
+            } else {
+                ctx.fillStyle = '#f8f9fa';
+                ctx.fillRect(qrX, qrY, qrSize, qrSize);
+                
+                ctx.fillStyle = '#dee2e6';
+                ctx.font = '120px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('📱', width/2, height/2 - 40);
+                
+                ctx.fillStyle = primary;
+                ctx.font = 'bold 32px Cairo, Arial';
+                ctx.fillText('ارفع QR Code', width/2, height/2 + 50);
+                
+                ctx.fillStyle = secondary;
+                ctx.font = '24px Cairo, Arial';
+                ctx.fillText('لبدء التصميم الاحترافي', width/2, height/2 + 90);
+            }
+            
+            // ==========================================
+            // ✅ الصورة الشخصية - الحد الأقصى 27%
+            // ==========================================
+            if (overlayImage && overlayImage.complete && qrImage) {
+                // ✅ قراءة القيمة مع التأكد من عدم تجاوز 27%
+                let sizePercent = parseInt(document.getElementById('overlaySize').value) || 20;
+                sizePercent = Math.min(sizePercent, 27); // ✅ الحد الأقصى 27%
+                
+                const overlaySize = (qrSize * sizePercent) / 100;
+                const centerX = width / 2;
+                const centerY = height / 2 - 20;
+                
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, overlaySize/2, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.clip();
+                ctx.drawImage(overlayImage, centerX - overlaySize/2, centerY - overlaySize/2, overlaySize, overlaySize);
+                ctx.restore();
+                
+                // طبقة 1: الظل
+                ctx.shadowColor = 'rgba(0,0,0,0.4)';
+                ctx.shadowBlur = 20;
+                ctx.shadowOffsetY = 8;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, overlaySize/2 + 10, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+                ctx.lineWidth = 10;
+                ctx.stroke();
+                ctx.shadowColor = 'transparent';
+                
+                // طبقة 2: primary
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, overlaySize/2 + 8, 0, Math.PI * 2);
+                ctx.strokeStyle = primary;
+                ctx.lineWidth = 8;
+                ctx.stroke();
+                
+                // طبقة 3: secondary
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, overlaySize/2 + 8, 0, Math.PI * 2);
+                ctx.strokeStyle = secondary;
+                ctx.lineWidth = 4;
+                ctx.stroke();
+                
+                // طبقة 4: أبيض
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, overlaySize/2 + 4, 0, Math.PI * 2);
+                ctx.strokeStyle = '#FFFFFF';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // طبقة 5: لمعان
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, overlaySize/2 + 2, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+            
+           
+        }
+
+
+        // ==========================================
+        // دوال المعالجة
+        // ==========================================
+        function makeSquare(img, callback) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1000;
+            canvas.height = 1000;
+            const ctx = canvas.getContext('2d');
+            
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, 1000, 1000);
+            
+            const sSize = Math.min(img.width, img.height);
+            
+            ctx.drawImage(img, 
+                (img.width - sSize) / 2, 
+                (img.height - sSize) / 2, 
+                sSize, sSize, 
+                0, 0, 1000, 1000
+            );
+            
+            const result = new Image();
+            result.onload = function() {
+                if (callback) callback(result);
+            };
+            result.src = canvas.toDataURL('image/png');
+            return result;
+        }
+
         function handleQRUpload(input) {
-            if (input.files && input.files[0]) {
-                showLoading();
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    qrImage = new Image();
-                    qrImage.onload = function() {
-                        document.getElementById('qrPlaceholder').classList.add('d-none');
-                        document.getElementById('qrPreviewContainer').classList.remove('d-none');
-                        document.getElementById('qrPreview').src = e.target.result;
-                        document.getElementById('qrUploadArea').classList.add('has-file');
-                        document.getElementById('downloadBtn').disabled = false;
+            if (!input.files || !input.files[0]) return;
+            
+            showLoading();
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    makeSquare(img, function(squaredImg) {
+                        qrImage = squaredImg;
+                        
+                        document.getElementById('qrPlaceholder')?.classList.add('d-none');
+                        document.getElementById('qrPreviewContainer')?.classList.remove('d-none');
+                        const preview = document.getElementById('qrPreview');
+                        if (preview) preview.src = qrImage.src;
+                        
+                        document.getElementById('qrUploadArea')?.classList.add('has-file');
+                        const downloadBtn = document.getElementById('downloadBtn');
+                        if (downloadBtn) downloadBtn.disabled = false;
+                        
                         hideLoading();
                         updateCard();
                         
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'تم الرفع!',
-                            text: 'تم تحميل QR Code بنجاح',
-                            timer: 1500,
-                            showConfirmButton: false,
-                            position: 'top-end',
-                            toast: true
-                        });
-                    };
-                    qrImage.src = e.target.result;
+                        if (typeof Swal !== 'undefined') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'تم التحويل!',
+                                text: 'الصورة أصبحت مربعة 1:1 بجودة عالية',
+                                timer: 1500,
+                                showConfirmButton: false,
+                                toast: true,
+                                position: 'top-end'
+                            });
+                        }
+                    });
                 };
-                reader.readAsDataURL(input.files[0]);
-            }
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
         }
 
         function handleOverlayUpload(input) {
-            if (input.files && input.files[0]) {
-                showLoading();
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    overlayImage = new Image();
-                    overlayImage.onload = function() {
-                        document.getElementById('overlayPlaceholder').classList.add('d-none');
-                        document.getElementById('overlayPreviewContainer').classList.remove('d-none');
-                        document.getElementById('overlayPreview').src = e.target.result;
-                        document.getElementById('overlayUploadArea').classList.add('has-file');
-                        document.getElementById('sizeControl').style.display = 'block';
+            if (!input.files || !input.files[0]) return;
+            
+            showLoading();
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    makeSquare(img, function(squaredImg) {
+                        overlayImage = squaredImg;
+                        
+                        document.getElementById('overlayPlaceholder')?.classList.add('d-none');
+                        document.getElementById('overlayPreviewContainer')?.classList.remove('d-none');
+                        const preview = document.getElementById('overlayPreview');
+                        if (preview) preview.src = overlayImage.src;
+                        
+                        document.getElementById('overlayUploadArea')?.classList.add('has-file');
+                        const sizeControl = document.getElementById('sizeControl');
+                        if (sizeControl) sizeControl.style.display = 'block';
+                        
                         hideLoading();
                         updateCard();
                         
-                        // تأثير اهتزاز خفيف
-                        document.getElementById('overlayPreviewContainer').animate([
-                            { transform: 'scale(0)' },
-                            { transform: 'scale(1.1)' },
-                            { transform: 'scale(1)' }
-                        ], {
-                            duration: 500,
-                            easing: 'ease-out'
-                        });
-                    };
-                    overlayImage.src = e.target.result;
+                        const container = document.getElementById('overlayPreviewContainer');
+                        if (container) {
+                            container.animate([
+                                { transform: 'scale(0) rotate(-180deg)' },
+                                { transform: 'scale(1.1) rotate(10deg)' },
+                                { transform: 'scale(1) rotate(0)' }
+                            ], { duration: 600, easing: 'ease-out' });
+                        }
+                    });
                 };
-                reader.readAsDataURL(input.files[0]);
-            }
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
         }
 
         function selectColor(element) {
@@ -918,483 +1022,121 @@
             element.classList.add('active');
             selectedColor = element.getAttribute('data-color');
             
-            // تأثير صوتي بصري
             element.animate([
                 { transform: 'scale(1)' },
                 { transform: 'scale(1.3)' },
                 { transform: 'scale(1.15)' }
-            ], {
-                duration: 300,
-                easing: 'ease-out'
-            });
+            ], { duration: 300 });
             
             updateCard();
         }
 
         function updateSizeLabel() {
-            const size = document.getElementById('overlaySize').value;
-            document.getElementById('sizeValue').textContent = size + '%';
+            const sizeValue = document.getElementById('sizeValue');
+            const overlaySize = document.getElementById('overlaySize');
+            if (sizeValue && overlaySize) {
+                // ✅ التأكد من عدم تجاوز 27% في العرض أيضاً
+                let val = parseInt(overlaySize.value);
+                val = Math.min(val, 27);
+                sizeValue.textContent = val + '%';
+            }
         }
 
         function showLoading() {
-            document.getElementById('loadingOverlay').style.display = 'flex';
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) overlay.style.display = 'flex';
         }
 
         function hideLoading() {
-            document.getElementById('loadingOverlay').style.display = 'none';
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) overlay.style.display = 'none';
         }
 
-        function updateCard() {
-            const canvas = document.getElementById('qrCanvas');
-            const ctx = canvas.getContext('2d');
-            const width = canvas.width;
-            const height = canvas.height;
-            
-            ctx.clearRect(0, 0, width, height);
-            
-            const [primary, secondary] = colors[selectedColor];
-            
-            // خلفية متدرجة
-            const gradient = ctx.createLinearGradient(0, 0, 0, height);
-            gradient.addColorStop(0, primary);
-            gradient.addColorStop(1, secondary);
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, width, height);
-            
-            // إطار ذهبي
-            ctx.strokeStyle = '#FFD700';
-            ctx.lineWidth = 12;
-            ctx.strokeRect(20, 20, width-40, height-40);
-            
-            ctx.strokeStyle = 'rgba(255,255,255,0.5)';
-            ctx.lineWidth = 4;
-            ctx.strokeRect(40, 40, width-80, height-80);
-            
-            // خلفية بيضاء للـ QR
-            const qrSize = 600;
-            const qrX = (width - qrSize) / 2;
-            const qrY = (height - qrSize) / 2;
-            
-            ctx.fillStyle = 'white';
-            ctx.shadowColor = 'rgba(0,0,0,0.2)';
-            ctx.shadowBlur = 20;
-            ctx.shadowOffsetY = 10;
-            ctx.fillRect(qrX - 20, qrY - 20, qrSize + 40, qrSize + 40);
-            ctx.shadowColor = 'transparent';
-            
-            // رسم QR
-            if (qrImage) {
-                ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize);
-            } else {
-                ctx.fillStyle = '#e0e0e0';
-                ctx.fillRect(qrX, qrY, qrSize, qrSize);
-                ctx.fillStyle = '#999';
-                ctx.textAlign = 'center';
-                ctx.font = 'bold 30px Cairo';
-                ctx.fillText('ارفع QR Code', width/2, height/2);
-                ctx.font = '20px Cairo';
-                ctx.fillText('لبدء التصميم', width/2, height/2 + 40);
-            }
-            
-            // رسم الصورة فوق QR
-            if (overlayImage && qrImage) {
-                const sizePercent = parseInt(document.getElementById('overlaySize').value);
-                const overlaySize = (qrSize * sizePercent) / 100;
-                const centerX = width / 2;
-                const centerY = height / 2;
-                
-                ctx.save();
-                
-                // دائرة مقصوصة
-                ctx.beginPath();
-                ctx.arc(centerX, centerY, overlaySize/2, 0, Math.PI * 2);
-                ctx.closePath();
-                ctx.clip();
-                
-                ctx.drawImage(overlayImage, centerX - overlaySize/2, centerY - overlaySize/2, overlaySize, overlaySize);
-                ctx.restore();
-                
-                // إطار أبيض
-                ctx.beginPath();
-                ctx.arc(centerX, centerY, overlaySize/2, 0, Math.PI * 2);
-                ctx.strokeStyle = 'white';
-                ctx.lineWidth = 8;
-                ctx.stroke();
-                
-                // ظل
-                ctx.beginPath();
-                ctx.arc(centerX, centerY, overlaySize/2 + 4, 0, Math.PI * 2);
-                ctx.strokeStyle = 'rgba(0,0,0,0.15)';
-                ctx.lineWidth = 4;
-                ctx.stroke();
-            }
-        }
-
+        // ==========================================
+        // تحميل بجودة عالية
+        // ==========================================
         function downloadHighRes() {
             showLoading();
             
             setTimeout(() => {
                 const canvas = document.getElementById('qrCanvas');
-                const exportCanvas = document.createElement('canvas');
-                const exportCtx = exportCanvas.getContext('2d');
-                exportCanvas.width = 1600;
-                exportCanvas.height = 1600;
+                if (!canvas) {
+                    hideLoading();
+                    return;
+                }
                 
-                exportCtx.drawImage(canvas, 0, 0, 1600, 1600);
+                const exportCanvas = document.createElement('canvas');
+                const exportSize = 2000;
+                exportCanvas.width = exportSize;
+                exportCanvas.height = exportSize;
+                const exportCtx = exportCanvas.getContext('2d');
+                
+                exportCtx.imageSmoothingEnabled = true;
+                exportCtx.imageSmoothingQuality = 'high';
+                exportCtx.drawImage(canvas, 0, 0, exportSize, exportSize);
                 
                 const link = document.createElement('a');
-                link.download = `QR-Code-HD-${Date.now()}.png`;
+                link.download = `QR-Luxury-${Date.now()}.png`;
                 link.href = exportCanvas.toDataURL('image/png', 1.0);
                 link.click();
                 
                 hideLoading();
                 
-                Swal.fire({
-                    icon: 'success',
-                    title: '🎉 تم التحميل بنجاح!',
-                    text: 'الصورة بدقة عالية (1600x1600) جاهزة للاستخدام',
-                    confirmButtonColor: '#667eea',
-                    confirmButtonText: 'رائع!',
-                    timer: 3000,
-                    timerProgressBar: true
-                });
-            }, 500);
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '🎉 تم التحميل!',
+                        text: `الصورة بدقة ${exportSize}x${exportSize} جاهزة للطباعة`,
+                        confirmButtonColor: '#667eea',
+                        confirmButtonText: 'رائع!',
+                        timer: 3000
+                    });
+                }
+            }, 800);
         }
-        
-        // تهيئة أولية
-        window.onload = function() {
-            const canvas = document.getElementById('qrCanvas');
-            const ctx = canvas.getContext('2d');
-            
-            // خلفية متحركة أولية
-            let hue = 0;
-            function animateIntro() {
-                hue = (hue + 1) % 360;
-                ctx.fillStyle = `hsl(${hue}, 70%, 95%)`;
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#667eea';
-                ctx.textAlign = 'center';
-                ctx.font = 'bold 35px Cairo';
-                ctx.fillText('✨ جاهز للتصميم ✨', canvas.width/2, canvas.height/2);
-            }
-            
-            // تشغيل مرة واحدة فقط
-            animateIntro();
-            
-            // ثم الرسم الثابت
-            setTimeout(() => {
-                updateCard();
-            }, 100);
-        };
 
+        // ==========================================
         // اختصارات لوحة المفاتيح
+        // ==========================================
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey && e.key === 's') {
                 e.preventDefault();
-                if (!document.getElementById('downloadBtn').disabled) {
+                const downloadBtn = document.getElementById('downloadBtn');
+                if (downloadBtn && !downloadBtn.disabled) {
                     downloadHighRes();
                 }
             }
         });
 
-        
-        
-// ==========================================
-// الدالة السحرية - تحويل أي صورة لمربع 1:1
-// ==========================================
-function makeSquare(img, callback) {
-    const canvas = document.createElement('canvas');
-    const size = Math.min(img.width, img.height);
-    canvas.width = 800;  // حجم ثابت عالي
-    canvas.height = 800;
-    const ctx = canvas.getContext('2d');
-    
-    // قص من الوسط
-    const sx = (img.width - size) / 2;
-    const sy = (img.height - size) / 2;
-    
-    ctx.drawImage(img, sx, sy, size, size, 0, 0, 800, 800);
-    
-    const result = new Image();
-    result.onload = function() {
-        if (callback) callback(result);
-    };
-    result.src = canvas.toDataURL('image/png');
-    result.width = 800;
-    result.height = 800;
-    return result;
-}
+        // ==========================================
+        // الموسيقى
+        // ==========================================
+        var bgMusic = document.getElementById('bgMusic');
+        var isMuted = false;
 
-function handleQRUpload(input) {
-    if (!input.files || !input.files[0]) return;
-    
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const img = new Image();
-        img.onload = function() {
-            // تحويل تلقائي لـ 1:1 مع callback
-            makeSquare(img, function(squaredImg) {
-                qrImage = squaredImg;
-                
-                const placeholder = document.getElementById('qrPlaceholder');
-                const previewContainer = document.getElementById('qrPreviewContainer');
-                const preview = document.getElementById('qrPreview');
-                const uploadArea = document.getElementById('qrUploadArea');
-                const downloadBtn = document.getElementById('downloadBtn');
-                
-                if (placeholder) placeholder.classList.add('d-none');
-                if (previewContainer) previewContainer.classList.remove('d-none');
-                if (preview) preview.src = qrImage.src;
-                if (uploadArea) uploadArea.classList.add('has-file');
-                if (downloadBtn) downloadBtn.disabled = false;
-                
-                updateCard();
-                
-                // التحقق من وجود Swal قبل الاستخدام
-                if (typeof Swal !== 'undefined') {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'تم التحويل!',
-                        text: 'الصورة أصبحت مربعة 1:1',
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
-                }
-            });
-        };
-        img.src = e.target.result;
-    };
-    reader.readAsDataURL(input.files[0]);
-}
+        function startMusic() {
+            document.getElementById('welcomeModal').style.display = 'none';
+            if (bgMusic) {
+                bgMusic.volume = 0.5;
+                bgMusic.play().then(function() {
+                    console.log('Music started!');
+                }).catch(function(err) {
+                    console.log('Error:', err);
+                });
+            }
+        }
 
-function handleOverlayUpload(input) {
-    if (!input.files || !input.files[0]) return;
-    
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const img = new Image();
-        img.onload = function() {
-            // تحويل تلقائي لـ 1:1 مع callback
-            makeSquare(img, function(squaredImg) {
-                overlayImage = squaredImg;
-                
-                const placeholder = document.getElementById('overlayPlaceholder');
-                const previewContainer = document.getElementById('overlayPreviewContainer');
-                const preview = document.getElementById('overlayPreview');
-                const uploadArea = document.getElementById('overlayUploadArea');
-                const sizeControl = document.getElementById('sizeControl');
-                
-                if (placeholder) placeholder.classList.add('d-none');
-                if (previewContainer) previewContainer.classList.remove('d-none');
-                if (preview) preview.src = overlayImage.src;
-                if (uploadArea) uploadArea.classList.add('has-file');
-                if (sizeControl) sizeControl.style.display = 'block';
-                
-                updateCard();
-            });
-        };
-        img.src = e.target.result;
-    };
-    reader.readAsDataURL(input.files[0]);
-}
+        function toggleMute() {
+            if (!bgMusic) return;
+            isMuted = !isMuted;
+            bgMusic.muted = isMuted;
+            document.getElementById('muteBtn').innerHTML = isMuted ? '🔇' : '🔊';
+        }
 
-function selectColor(element) {
-    document.querySelectorAll('.color-btn').forEach(el => el.classList.remove('active'));
-    element.classList.add('active');
-    selectedColor = element.getAttribute('data-color');
-    updateCard();
-}
-
-function updateSizeLabel() {
-    const sizeValue = document.getElementById('sizeValue');
-    const overlaySize = document.getElementById('overlaySize');
-    if (sizeValue && overlaySize) {
-        sizeValue.textContent = overlaySize.value + '%';
-    }
-}
-
-function updateCard() {
-    const canvas = document.getElementById('qrCanvas');
-    if (!canvas) {
-        console.error('Canvas not found: qrCanvas');
-        return;
-    }
-    
-    const ctx = canvas.getContext('2d');
-    const w = 800, h = 800;
-    
-    // ضبط أبعاد الكانفاس
-    canvas.width = w;
-    canvas.height = h;
-    
-    ctx.clearRect(0, 0, w, h);
-    
-    // خلفية متدرجة
-    const colorKey = selectedColor || 'blue';
-    const [c1, c2] = colors[colorKey] || colors['blue'];
-    const grad = ctx.createLinearGradient(0, 0, 0, h);
-    grad.addColorStop(0, c1);
-    grad.addColorStop(1, c2);
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, w, h);
-    
-    // إطار ذهبي
-    ctx.strokeStyle = '#FFD700';
-    ctx.lineWidth = 12;
-    ctx.strokeRect(20, 20, w-40, h-40);
-    
-    // خلفية بيضاء للـ QR
-    const qrSize = 600;
-    const qrX = (w - qrSize) / 2;
-    const qrY = (h - qrSize) / 2;
-    ctx.fillStyle = 'white';
-    ctx.fillRect(qrX-20, qrY-20, qrSize+40, qrSize+40);
-    
-    // رسم QR
-    if (qrImage && qrImage.complete) {
-        ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize);
-    } else {
-        ctx.fillStyle = '#ddd';
-        ctx.fillRect(qrX, qrY, qrSize, qrSize);
-        ctx.fillStyle = '#999';
-        ctx.textAlign = 'center';
-        ctx.font = '30px Cairo, Arial, sans-serif';
-        ctx.fillText('ارفع QR Code', w/2, h/2);
-    }
-    
-    // رسم الصورة فوق
-    if (overlayImage && overlayImage.complete && qrImage) {
-        const overlaySizeInput = document.getElementById('overlaySize');
-        const pct = overlaySizeInput ? parseInt(overlaySizeInput.value) || 30 : 30;
-        const sz = (qrSize * pct) / 100;
-        const cx = w / 2, cy = h / 2;
-        
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(cx, cy, sz/2, 0, Math.PI*2);
-        ctx.clip();
-        ctx.drawImage(overlayImage, cx-sz/2, cy-sz/2, sz, sz);
-        ctx.restore();
-        
-        ctx.beginPath();
-        ctx.arc(cx, cy, sz/2, 0, Math.PI*2);
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = 6;
-        ctx.stroke();
-    }
-}
-
-function downloadImage() {
-    const canvas = document.getElementById('qrCanvas');
-    if (!canvas) {
-        console.error('Canvas not found');
-        return;
-    }
-    
-    // التأكد من أن الكانفاس محدث
-    updateCard();
-    
-    const link = document.createElement('a');
-    link.download = 'QR-Code-' + Date.now() + '.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-}
-
-// تهيئة
-window.onload = function() {
-    updateCard();
-};
-
-function updateCard() {
-    const canvas = document.getElementById('qrCanvas');
-    const ctx = canvas.getContext('2d');
-    const width = canvas.width;
-    const height = canvas.height;
-    
-    ctx.clearRect(0, 0, width, height);
-    
-    const [primary, secondary] = colors[selectedColor];
-    
-    // خلفية متدرجة
-    const gradient = ctx.createLinearGradient(0, 0, 0, height);
-    gradient.addColorStop(0, primary);
-    gradient.addColorStop(1, secondary);
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, width, height);
-    
-    // ==========================================
-    // ✅ خط أبيض بجانب الإطار الذهبي (جديد)
-    // ==========================================
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 8;
-    ctx.strokeRect(12, 12, width-24, height-24);  // أعرض من الذهبي
-    
-    // الإطار الذهبي الأصلي
-    ctx.strokeStyle = '#FFD700';
-    ctx.lineWidth = 12;
-    ctx.strokeRect(20, 20, width-40, height-40);
-    
-    // إطار داخلي شفاف
-    ctx.strokeStyle = 'rgba(255,255,255,0.5)';
-    ctx.lineWidth = 4;
-    ctx.strokeRect(40, 40, width-80, height-80);
-    
-    // خلفية بيضاء للـ QR
-    const qrSize = 600;
-    const qrX = (width - qrSize) / 2;
-    const qrY = (height - qrSize) / 2;
-    
-    ctx.fillStyle = 'white';
-    ctx.shadowColor = 'rgba(0,0,0,0.2)';
-    ctx.shadowBlur = 20;
-    ctx.shadowOffsetY = 10;
-    ctx.fillRect(qrX-20, qrY-20, qrSize+40, qrSize+40);
-    ctx.shadowColor = 'transparent';
-    
-    // رسم QR
-    if (qrImage) {
-        ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize);
-    } else {
-        ctx.fillStyle = '#e0e0e0';
-        ctx.fillRect(qrX, qrY, qrSize, qrSize);
-        ctx.fillStyle = '#999';
-        ctx.textAlign = 'center';
-        ctx.font = 'bold 30px Cairo';
-        ctx.fillText('ارفع QR Code', width/2, height/2);
-        ctx.font = '20px Cairo';
-        ctx.fillText('لبدء التصميم', width/2, height/2 + 40);
-    }
-    
-    // رسم الصورة فوق QR
-    if (overlayImage && qrImage) {
-        const sizePercent = parseInt(document.getElementById('overlaySize').value);
-        const overlaySize = (qrSize * sizePercent) / 100;
-        const centerX = width / 2;
-        const centerY = height / 2;
-        
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, overlaySize/2, 0, Math.PI * 2);
-        ctx.closePath();
-        ctx.clip();
-        ctx.drawImage(overlayImage, centerX - overlaySize/2, centerY - overlaySize/2, overlaySize, overlaySize);
-        ctx.restore();
-        
-        // إطار أبيض
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, overlaySize/2, 0, Math.PI * 2);
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = 8;
-        ctx.stroke();
-        
-        // ظل
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, overlaySize/2 + 4, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(0,0,0,0.15)';
-        ctx.lineWidth = 4;
-        ctx.stroke();
-    }
-}
+        // تهيئة أولية
+        window.addEventListener('load', function() {
+            updateCard();
+        });
     </script>
 
     <!-- مشغل موسيقى -->
@@ -1407,30 +1149,6 @@ function updateCard() {
                    width: 50px; height: 50px; border-radius: 50%; border: none;
                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
                    color: white; font-size: 20px; cursor: pointer;">🔊</button>
-
-<script>
-    var bgMusic = document.getElementById('bgMusic');
-    var isMuted = false;
-
-    function startMusic() {
-        document.getElementById('welcomeModal').style.display = 'none';
-        if (bgMusic) {
-            bgMusic.volume = 0.5;
-            bgMusic.play().then(function() {
-                console.log('Music started!');
-            }).catch(function(err) {
-                console.log('Error:', err);
-            });
-        }
-    }
-
-    function toggleMute() {
-        if (!bgMusic) return;
-        isMuted = !isMuted;
-        bgMusic.muted = isMuted;
-        document.getElementById('muteBtn').innerHTML = isMuted ? '🔇' : '🔊';
-    }
-</script>
 
 </body>
 </html>
